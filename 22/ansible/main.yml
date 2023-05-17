@@ -1,0 +1,50 @@
+- name: Install Nginx and MySQL
+  hosts: all
+  gather_facts: false
+  
+  handlers:
+    - name: Restart Nginx
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
+
+  tasks:
+    - name: Gather facts, but in a smart way
+      block:
+        - name: Gather facts
+          ansible.builtin.gather_facts:
+      rescue:
+        - name: Install Python
+          ansible.builtin.raw: apt update && apt install -y python3
+        - name: Gather facts
+          ansible.builtin.gather_facts:
+      always:
+        - name: Debug
+          ansible.builtin.debug:
+            var: ansible_pkg_mgr
+        - name: Install Nginx
+          ansible.builtin.apt:
+            name: nginx
+
+        - name: Debug
+          ansible.builtin.shell: echo 123
+      notify:
+        - Restart Nginx
+        
+        - name: Debug2
+          ansible.builtin.shell: echo 123
+      notify:
+        - Restart Nginx
+        
+        - name: Debug3
+          ansible.builtin.shell: echo 123
+      notify:
+        - Restart Nginx
+
+    - name: Include MySQL role using include_role
+      ansible.builtin.include_role:
+        name: mysql
+        
+    # - name: Include MySQL role using import_role
+    #   ansible.builtin.import_role:
+    #     name: mysql
