@@ -28,18 +28,15 @@
 
         - name: Debug
           ansible.builtin.shell: echo 123
-      notify:
-        - Restart Nginx
+      notify: Restart Nginx
         
         - name: Debug2
           ansible.builtin.shell: echo 123
-      notify:
-        - Restart Nginx
+      notify: Restart Nginx
         
         - name: Debug3
           ansible.builtin.shell: echo 123
-      notify:
-        - Restart Nginx
+      notify: Restart Nginx
 
     - name: Include MySQL role using include_role
       ansible.builtin.include_role:
